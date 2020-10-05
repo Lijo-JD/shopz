@@ -1,1 +1,70 @@
-<p>admin works!</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" routerLink="/admin">Shopz Admin</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        Welcome {{this.user}}
+      </li>
+    </ul>
+    <button class="btn btn-danger my-2 my-lg-0" (click)="onLogout()">Logout</button>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Item name</th>
+            <th scope="col">Item cost</th>
+            <th scope="col">Edit item</th>
+            <th scope="col">Delete item</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products; let i=index">
+              <td>{{product.item_name}}</td>
+              <td>{{product.item_price}}</td>
+              <td><button type="button" class="btn btn-secondary" (click)="onEdit(product)">Edit</button></td>
+              <td><button type="button" class="btn btn-danger" (click)="onDelete(product)" >Delete</button></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4">
+      <h3>Add/Edit item</h3>
+      <form (ngSubmit)="onAddItem()" [formGroup]="addItem">
+        <div class="form-group">
+          <label for="item_name">Item name</label>
+          <input type="text" name="item_name" formControlName="item_name" [(ngModel)]="this.product.item_name">
+          <div class="alert alert-danger" *ngIf="!addItem.controls.item_name.valid && !addItem.controls.item_name.pristine">Item name must contain atleat 3 letters</div>
+        </div>
+        <div class="form-group">
+          <label for="item_price">Item price</label>
+          <input type="text" name="item_price" formControlName="item_price" [(ngModel)]="this.product.item_price" >
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; let i=index">
+            <td> {{user.email}} </td>
+            <td><button type="button" class="btn btn-danger" (click)="onDeleteUser(user)" *ngIf="user.security==='admin'? '': 'disabled'">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

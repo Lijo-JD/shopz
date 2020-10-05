@@ -1,1 +1,35 @@
-<p>user works!</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Shopz</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        Welcome {{this.user}}
+      </li>
+    </ul>
+    <button class="btn btn-danger my-2 my-lg-0" (click)="onLogout()">Logout</button>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Item name</th>
+            <th scope="col">Item cost</th>
+            <th scope="col">Add to cart</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products; let i=index">
+            <td> {{product.item_name}} </td>
+            <td> {{product.item_price}} </td>
+            <td><button type="button" class="btn btn-primary" (click)="onCart(product)">Add to cart</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4">
+      <app-cart [products]="cart"></app-cart>
+    </div>
+  </div>
+</div>

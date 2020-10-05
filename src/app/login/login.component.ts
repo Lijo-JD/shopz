@@ -62,18 +62,19 @@ export class LoginComponent implements OnInit {
     this.user.password = this.loginForm.value.password;
     this.user.security = 'user';
     this.auth.login(this.user).subscribe((data) => {
-      let jwtData = JSON.stringify(data).split('.')[1];
-      let decodedJwtJsonData = window.atob(jwtData);
-      this.decodedJwtData = JSON.parse(decodedJwtJsonData);
-      if (this.decodedJwtData === null) {
-        console.log(this.decodedJwtData);
+      if (data === null) {
         this.loginForm.reset();
-      } else if (this.decodedJwtData.security === 'admin') {
-        localStorage.setItem('jwt', JSON.stringify(data))
-        this.router.navigate(['/admin']);
-      } else if (this.decodedJwtData.security === 'user') {
-        localStorage.setItem('jwt', JSON.stringify(data))
-        this.router.navigate(['/user']);
+      } else {
+        let jwtData = JSON.stringify(data).split('.')[1];
+        let decodedJwtJsonData = window.atob(jwtData);
+        this.decodedJwtData = JSON.parse(decodedJwtJsonData);
+        if (this.decodedJwtData.security === 'admin') {
+          localStorage.setItem('jwt', JSON.stringify(data));
+          this.router.navigate(['/admin']);
+        } else if (this.decodedJwtData.security === 'user') {
+          localStorage.setItem('jwt', JSON.stringify(data));
+          this.router.navigate(['/user']);
+        }
       }
     });
   }
@@ -83,19 +84,24 @@ export class LoginComponent implements OnInit {
     this.user.password = this.registerForm.value.password;
     this.user.security = 'user';
     this.auth.register(this.user).subscribe((data) => {
-      this.user = new User(data as User);
-      this.auth.login(this.user).subscribe((user) => {
-        let jwtData = JSON.stringify(user).split('.')[1];
-        let decodedJwtJsonData = window.atob(jwtData);
-        this.decodedJwtData = JSON.parse(decodedJwtJsonData);
-        if (this.decodedJwtData === null) {
-          console.log(this.decodedJwtData);
-          this.registerForm.reset();
-        } else if (this.decodedJwtData.security === 'user') {
-          localStorage.setItem('jwt', JSON.stringify(user))
-          this.router.navigate(['/user']);
-        }
-      });
+      if (data === null) {
+        this.registerForm.reset();
+      } else {
+        this.user = new User(data as User);
+        this.auth.login(this.user).subscribe((user) => {
+          if (user === null) {
+            this.registerForm.reset();
+          } else {
+            let jwtData = JSON.stringify(user).split('.')[1];
+            let decodedJwtJsonData = window.atob(jwtData);
+            this.decodedJwtData = JSON.parse(decodedJwtJsonData);
+            if (this.decodedJwtData.security === 'user') {
+              localStorage.setItem('jwt', JSON.stringify(user));
+              this.router.navigate(['/user']);
+            }
+          }
+        });
+      }
     });
   }
 

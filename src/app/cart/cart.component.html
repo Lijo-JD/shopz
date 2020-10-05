@@ -1,0 +1,14 @@
+<table class="table table-striped">
+  <thead>
+    <th scope="col">Item name</th>
+    <th scope="col">Item price</th>
+    <th scope="col">Remove from cart</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products; let i=index">
+      <td>{{product.item_name}}</td>
+      <td>{{product.item_price}}</td>
+      <td><button type="button" class="btn btn-danger" (click)="onRemove(i)">Remove</button></td>
+    </tr>
+  </tbody>
+</table>

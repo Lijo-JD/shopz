@@ -19,6 +19,10 @@ export class AuthService {
     return this.http.post('http://localhost:3000/register', user)
   }
 
+  getUsers() {
+    return this.http.get('http://localhost:3000/users')
+  }
+
   isAuthenticated() {
     let jwt = localStorage.getItem('jwt')
     if(jwt === null){
@@ -35,6 +39,11 @@ export class AuthService {
         return false
       }
     }
+  }
+
+  deleteUser(user: User) {
+    let url = 'http://localhost:3000/deleteUser/' + user._id
+    return this.http.delete(url)
   }
 
 }
